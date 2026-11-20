@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CampusConnect | Student Community</title>
+
+    <script>
+        (() => {
+            let theme;
+
+            try {
+                const savedTheme = JSON.parse(localStorage.getItem("campusconnect.theme"));
+                if (savedTheme === "light" || savedTheme === "dark") {
+                    theme = savedTheme;
+                }
+            } catch (error) {
+                console.warn("Saved theme preference is unavailable.", error);
+            }
+
+            if (!theme) {
+                theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? "dark"
+                    : "light";
+            }
+
+            document.documentElement.dataset.theme = theme;
+        })();
+    </script>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <!-- ================= NAVIGATION BAR ================= -->
+
+    <header class="header">
+
+        <nav class="navbar">
+
+            <a href="#home" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                CampusConnect
+            </a>
+
+            <div class="nav-buttons">
+
+                <button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+                    <i class="fas fa-sun" aria-hidden="true"></i>
+                    <span>Dark mode</span>
+                </button>
+
+                <a href="#login" class="login-btn">Login</a>
+
+                <a href="#signup" class="signup-btn">Sign Up</a>
+
+                <span class="account-status" id="account-status" hidden>
+                    Signed in as <strong id="account-name"></strong>
+                </span>
+                <button class="logout-btn" id="logout-button" type="button" hidden>Log out</button>
+
+            </div>
+
+            <button class="menu-toggle" type="button" aria-label="Open navigation" aria-controls="campus-sidebar" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+
+        </nav>
+
+    </header>
+
+    <aside class="app-sidebar" id="campus-sidebar" aria-label="Campus navigation">
+        <div class="sidebar-heading">
+            <span class="sidebar-eyebrow">YOUR CAMPUS</span>
+            <span class="sidebar-caption">Community workspace</span>
+        </div>
+
+        <span class="sidebar-label">DISCOVER</span>
+        <ul class="nav-links">
+            <li><a class="active" href="#home"><i class="fas fa-house"></i><span>Home</span></a></li>
+            <li><a href="#feed"><i class="fas fa-comments"></i><span>Campus feed</span></a></li>
+            <li><a href="#events"><i class="fas fa-calendar-days"></i><span>Explore events</span></a></li>
+            <li><a href="#registrations"><i class="fas fa-ticket"></i><span>My registrations</span></a></li>
+        </ul>
+
+        <span class="sidebar-label sidebar-manage-label">MANAGE</span>
+        <ul class="sidebar-secondary-links">
+            <li><a href="#admin"><i class="fas fa-chart-line"></i><span>Admin dashboard</span></a></li>
+            <li><a href="#about"><i class="fas fa-circle-info"></i><span>About CampusConnect</span></a></li>
+            <li><a href="#contact"><i class="fas fa-envelope"></i><span>Contact</span></a></li>
+        </ul>
+
+        <div class="sidebar-card">
+            <span class="sidebar-card-icon"><i class="fas fa-sparkles"></i></span>
+            <strong>Make campus yours</strong>
+            <p>Find an event and meet the people behind it.</p>
+            <a href="#events">Browse events <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </aside>
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+
+    <main class="app-main">
+
+
+        <!-- ================= HERO SECTION ================= -->
+
+        <section class="hero" id="home">
+
+            <div class="hero-content">
+
+                <span class="hero-tag"><i class="fas fa-sun"></i> YOUR CAMPUS, CONNECTED</span>
+
+                <h1>
+                    Good things happen
+                    <span>when we show up.</span>
+                </h1>
+
+                <p>
+                    Meet your people, find something worth doing, and make
+                    the most of everything happening around campus.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="#events" class="hero-btn">
+                        Find your next event <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="#feed" class="hero-secondary-btn">See what's happening</a>
+                </div>
+
+                <div class="hero-highlights" aria-label="CampusConnect highlights">
+                    <span><i class="fas fa-circle-check"></i> All your campus events in one place</span>
+                </div>
+
+            </div>
+
+            <div class="hero-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=900"
+                    alt="Students participating in a college event">
+
+                <div class="hero-note">
+                    <span class="hero-note-icon"><i class="fas fa-calendar-check" aria-hidden="true"></i></span>
+                    <span>
+                        <strong>Find your next moment</strong>
+                        <small>Discover events happening on campus.</small>
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="feed-section" id="feed">
+            <div class="dashboard-welcome">
+                <div>
+                    <span class="section-kicker">CAMPUS COMMUNITY</span>
+                    <h2>A little closer to campus.</h2>
+                    <p>Share an update with your community. Your posts are saved on this device.</p>
+                </div>
+                <a class="dashboard-create-link" href="#post-composer"><i class="fas fa-plus"></i> Create a post</a>
+            </div>
+
+            <div class="community-layout">
+                <div class="community-main">
+                    <form id="post-composer" class="post-composer">
+                        <div class="composer-avatar" aria-hidden="true"><i class="fas fa-user"></i></div>
+                        <div class="composer-fields">
+                            <label class="sr-only" for="post-content">Share something with your campus community</label>
+                            <textarea id="post-content" rows="3" maxlength="500" placeholder="What's happening on campus?" required></textarea>
+                            <div class="composer-footer">
+                                <div class="composer-options">
+                                    <span id="post-character-count">0 / 500</span>
+                                    <label class="sr-only" for="post-category">Post category</label>
+                                    <select id="post-category" aria-label="Post category">
+                                        <option value="general">General</option>
+                                        <option value="announcement">Announcement</option>
+                                        <option value="question">Question</option>
+                                    </select>
+                                </div>
+                                <button class="submit-btn" type="submit"><i class="fas fa-paper-plane"></i> Share update</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="feed-toolbar">
+                        <div>
+                            <h3>Community updates</h3>
+                            <p>Posts you choose to share on this device</p>
+                        </div>
+                        <div class="feed-filters" role="group" aria-label="Filter community posts">
+                            <button class="feed-filter active" type="button" data-post-filter="all" aria-pressed="true">All posts</button>
+                            <button class="feed-filter" type="button" data-post-filter="announcement" aria-pressed="false">Announcements</button>
+                            <button class="feed-filter" type="button" data-post-filter="question" aria-pressed="false">Questions</button>
+                        </div>
+                    </div>
+
+                    <div id="community-posts" class="community-posts" aria-live="polite"></div>
+                </div>
+
+                <aside class="community-aside" aria-label="Campus quick links">
+                    <div class="aside-card">
+                        <div class="aside-card-heading">
+                            <span class="aside-icon"><i class="fas fa-calendar-check"></i></span>
+                            <div><h3>Find your people</h3><p>Start with something happening soon.</p></div>
+                        </div>
+                        <a class="aside-event-link" href="#events">See upcoming events <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="aside-card aside-note">
+                        <span class="section-kicker">A QUICK NOTE</span>
+                        <p>Your feed is private to this browser. Posts are stored locally and aren't sent to a campus server.</p>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+
+        <!-- ================= UPCOMING EVENTS SECTION ================= -->
+
+        <section class="events-section" id="events">
+
+            <div class="section-heading">
+
+                <span>What's Happening?</span>
+
+                <h2>Upcoming Campus Events</h2>
+
+                <p>
+                    Discover exciting opportunities happening around
+                    your campus.
+                </p>
+
+            </div>
+
+
+            <!-- Event Categories -->
+
+            <div class="event-categories">
+
+                <button class="category-btn active" data-category="all">
+                    All Events
+                </button>
+
+                <button class="category-btn" data-category="technical">
+                    Technical
+                </button>
+
+                <button class="category-btn" data-category="cultural">
+                    Cultural
+                </button>
+
+                <button class="category-btn" data-category="sports">
+                    Sports
+                </button>
+
+                <button class="category-btn" data-category="workshop">
+                    Workshops
+                </button>
+
+                <button class="category-btn" data-category="seminar">
+                    Seminars
+                </button>
+
+                <button class="category-btn" data-category="competition">
+                    Competitions
+                </button>
+
+            </div>
+
+            <div class="event-toolbar">
+                <label class="event-search">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input id="event-search" type="search" placeholder="Search events..." aria-label="Search events">
+                    <button class="clear-search" id="clear-event-search" type="button" aria-label="Clear event search" hidden>
+                        <i class="fas fa-xmark" aria-hidden="true"></i>
+                    </button>
+                </label>
+                <label class="event-sort-label" for="event-sort">Sort by
+                    <select class="event-sort" id="event-sort">
+                        <option value="featured">Featured</option>
+                        <option value="name">Name</option>
+                        <option value="date">Date</option>
+                        <option value="seats">Available seats</option>
+                    </select>
+                </label>
+                <p id="event-results" class="event-results" aria-live="polite"></p>
+            </div>
+
+
+            <!-- Event Cards -->
+
+            <div class="events-container">
+
+
+                <!-- Event 1 -->
+
+                <article class="event-card" data-category="technical">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600"
+                        alt="Coding competition">
+
+                    <div class="event-info">
+
+                        <span class="event-category">Technical</span>
+
+                        <h3>CodeFest 2026</h3>
+
+                        <p class="event-description">
+                            Participate in an exciting coding competition
+                            and demonstrate your programming skills.
+                        </p>
+
+                        <p>
+                            <i class="fas fa-calendar"></i>
+                            December 10, 2026
+                        </p>
+
+                        <p>
+                            <i class="fas fa-clock"></i>
+                            10:00 AM - 4:00 PM
+                        </p>
+
+                        <p>
+                            <i class="fas fa-location-dot"></i>
+                            Computer Science Block
+                        </p>
+
+                        <p class="available-seats">
+                            <i class="fas fa-users"></i>
+                            <span>45 Seats Available</span>
+                        </p>
+
+                        <button class="register-btn"
+                            data-event="CodeFest 2026">
+                            Register Now
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Event 2 -->
+
+                <article class="event-card" data-category="cultural">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1506157786151-b8491531f063?w=600"
+                        alt="College cultural festival">
+
+                    <div class="event-info">
+
+                        <span class="event-category">Cultural</span>
+
+                        <h3>Rhythm Fest 2026</h3>
+
+                        <p class="event-description">
+                            Celebrate creativity through music, dance,
+                            performances and cultural activities.
+                        </p>
+
+                        <p>
+                            <i class="fas fa-calendar"></i>
+                            December 15, 2026
+                        </p>
+
+                        <p>
+                            <i class="fas fa-clock"></i>
+                            5:00 PM - 9:00 PM
+                        </p>
+
+                        <p>
+                            <i class="fas fa-location-dot"></i>
+                            College Auditorium
+                        </p>
+
+                        <p class="available-seats">
+                            <i class="fas fa-users"></i>
+                            <span>100 Seats Available</span>
+                        </p>
+
+                        <button class="register-btn"
+                            data-event="Rhythm Fest 2026">
+                            Register Now
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Event 3 -->
+
+                <article class="event-card" data-category="sports">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=600"
+                        alt="Sports competition">
+
+                    <div class="event-info">
+
+                        <span class="event-category">Sports</span>
+
+                        <h3>Campus Sports Meet</h3>
+
+                        <p class="event-description">
+                            Show your athletic abilities and compete
+                            with talented students across the campus.
+                        </p>
+
+                        <p>
+                            <i class="fas fa-calendar"></i>
+                            December 20, 2026
+                        </p>
+
+                        <p>
+                            <i class="fas fa-clock"></i>
+                            8:00 AM - 5:00 PM
+                        </p>
+
+                        <p>
+                            <i class="fas fa-location-dot"></i>
+                            College Sports Ground
+                        </p>
+
+                        <p class="available-seats">
+                            <i class="fas fa-users"></i>
+                            <span>60 Seats Available</span>
+                        </p>
+
+                        <button class="register-btn"
+                            data-event="Campus Sports Meet">
+                            Register Now
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Event 4 -->
+
+                <article class="event-card" data-category="workshop">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600"
+                        alt="Students attending a workshop">
+
+                    <div class="event-info">
+
+                        <span class="event-category">Workshop</span>
+
+                        <h3>AI Innovation Workshop</h3>
+
+                        <p class="event-description">
+                            Learn about artificial intelligence,
+                            machine learning and emerging technologies.
+                        </p>
+
+                        <p>
+                            <i class="fas fa-calendar"></i>
+                            December 22, 2026
+                        </p>
+
+                        <p>
+                            <i class="fas fa-clock"></i>
+                            11:00 AM - 2:00 PM
+                        </p>
+
+                        <p>
+                            <i class="fas fa-location-dot"></i>
+                            Seminar Hall
+                        </p>
+
+                        <p class="available-seats">
+                            <i class="fas fa-users"></i>
+                            <span>30 Seats Available</span>
+                        </p>
+
+                        <button class="register-btn"
+                            data-event="AI Innovation Workshop">
+                            Register Now
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Event 5 -->
+
+                <article class="event-card" data-category="seminar">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600"
+                        alt="Educational seminar">
+
+                    <div class="event-info">
+
+                        <span class="event-category">Seminar</span>
+
+                        <h3>Future of Technology</h3>
+
+                        <p class="event-description">
+                            Explore future technological developments
+                            with industry experts and professionals.
+                        </p>
+
+                        <p>
+                            <i class="fas fa-calendar"></i>
+                            December 25, 2026
+                        </p>
+
+                        <p>
+                            <i class="fas fa-clock"></i>
+                            12:00 PM - 3:00 PM
+                        </p>
+
+                        <p>
+                            <i class="fas fa-location-dot"></i>
+                            Main Conference Hall
+                        </p>
+
+                        <p class="available-seats">
+                            <i class="fas fa-users"></i>
+                            <span>75 Seats Available</span>
+                        </p>
+
+                        <button class="register-btn"
+                            data-event="Future of Technology">
+                            Register Now
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Event 6 -->
+
+                <article class="event-card" data-category="competition">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600"
+                        alt="Student project competition">
+
+                    <div class="event-info">
+
+                        <span class="event-category">Competition</span>
+
+                        <h3>Project Expo 2026</h3>
+
+                        <p class="event-description">
+                            Present innovative projects, share ideas
+                            and compete with creative minds.
+                        </p>
+
+                        <p>
+                            <i class="fas fa-calendar"></i>
+                            December 28, 2026
+                        </p>
+
+                        <p>
+                            <i class="fas fa-clock"></i>
+                            9:00 AM - 4:00 PM
+                        </p>
+
+                        <p>
+                            <i class="fas fa-location-dot"></i>
+                            Innovation Centre
+                        </p>
+
+                        <p class="available-seats">
+                            <i class="fas fa-users"></i>
+                            <span>50 Seats Available</span>
+                        </p>
+
+                        <button class="register-btn"
+                            data-event="Project Expo 2026">
+                            Register Now
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= REGISTRATION SECTION ================= -->
+
+        <section class="registration-section" id="registration">
+
+            <div class="section-heading">
+
+                <span>Join the Experience</span>
+
+                <h2>Event Registration</h2>
+
+                <p>
+                    Fill in your details to participate in your
+                    favourite campus event.
+                </p>
+                <p class="local-data-note">Registrations in this preview are saved in this browser only.</p>
+
+            </div>
+
+
+            <form id="registration-form" class="registration-form">
+
+                <div class="form-group">
+
+                    <label for="student-name">Student Name</label>
+
+                    <input
+                        type="text"
+                        id="student-name"
+                        name="studentName"
+                        placeholder="Enter your full name"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="registration-number">
+                        Registration Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="registration-number"
+                        name="registrationNumber"
+                        placeholder="Enter your registration number"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="email">Email Address</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email address"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="phone">Phone Number</label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="Enter your phone number"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="department">Department</label>
+
+                    <select id="department" name="department" required>
+
+                        <option value="">Select Department</option>
+
+                        <option value="CSE">Computer Science</option>
+
+                        <option value="IT">Information Technology</option>
+
+                        <option value="ECE">Electronics Engineering</option>
+
+                        <option value="ME">Mechanical Engineering</option>
+
+                        <option value="CE">Civil Engineering</option>
+
+                        <option value="Other">Other</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="event-selection">Select Event</label>
+
+                    <select id="event-selection" name="event" required>
+
+                        <option value="">Choose an Event</option>
+
+                        <option value="CodeFest 2026">
+                            CodeFest 2026
+                        </option>
+
+                        <option value="Rhythm Fest 2026">
+                            Rhythm Fest 2026
+                        </option>
+
+                        <option value="Campus Sports Meet">
+                            Campus Sports Meet
+                        </option>
+
+                        <option value="AI Innovation Workshop">
+                            AI Innovation Workshop
+                        </option>
+
+                        <option value="Future of Technology">
+                            Future of Technology
+                        </option>
+
+                        <option value="Project Expo 2026">
+                            Project Expo 2026
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button type="submit" class="submit-btn">
+
+                    Submit Registration
+
+                    <i class="fas fa-arrow-right"></i>
+
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- ================= MY REGISTRATIONS SECTION ================= -->
+
+        <section class="my-registrations" id="registrations">
+
+            <div class="section-heading">
+
+                <span>Your Activities</span>
+
+                <h2>My Registrations</h2>
+
+                <p>
+                    Keep track of all the events you have registered for.
+                </p>
+
+            </div>
+
+
+            <div class="registrations-container" id="registrations-container">
+
+                <div class="empty-message">
+
+                    <i class="fas fa-calendar-check"></i>
+
+                    <h3>No Registrations Yet</h3>
+
+                    <p>
+                        You haven't registered for any events.
+                        Explore upcoming events and join the excitement!
+                    </p>
+
+                    <a href="#events" class="explore-btn">
+                        Explore Events
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= ADMIN DASHBOARD SECTION ================= -->
+
+        <section class="admin-section" id="admin">
+
+            <div class="section-heading">
+
+                <span>Administration</span>
+
+                <h2>Admin Dashboard</h2>
+
+                <p>
+                    Manage campus events and monitor student registrations.
+                </p>
+
+            </div>
+
+
+            <!-- Dashboard Statistics -->
+
+            <div class="dashboard-stats">
+
+
+                <div class="stat-card">
+
+                    <i class="fas fa-calendar-alt"></i>
+
+                    <h3>Total Events</h3>
+
+                    <p id="total-events">6</p>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <i class="fas fa-users"></i>
+
+                    <h3>Registered Students</h3>
+
+                    <p id="total-students">0</p>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <i class="fas fa-calendar-check"></i>
+
+                    <h3>Upcoming Events</h3>
+
+                    <p id="upcoming-events">6</p>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <i class="fas fa-chair"></i>
+
+                    <h3>Available Seats</h3>
+
+                    <p id="available-seats">360</p>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- Add New Event -->
+
+            <div class="admin-card">
+
+                <h3>
+                    <i class="fas fa-plus-circle"></i>
+                    Add New Event
+                </h3>
+
+
+                <form id="add-event-form">
+
+                    <div class="form-group">
+
+                        <label for="new-event-name">Event Name</label>
+
+                        <input
+                            type="text"
+                            id="new-event-name"
+                            placeholder="Enter event name"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="new-event-category">
+                            Event Category
+                        </label>
+
+                        <select id="new-event-category" required>
+
+                            <option value="">Select Category</option>
+
+                            <option value="technical">Technical</option>
+
+                            <option value="cultural">Cultural</option>
+
+                            <option value="sports">Sports</option>
+
+                            <option value="workshop">Workshop</option>
+
+                            <option value="seminar">Seminar</option>
+
+                            <option value="competition">Competition</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="new-event-date">Event Date</label>
+
+                        <input
+                            type="date"
+                            id="new-event-date"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="new-event-time">Event Time</label>
+
+                        <input
+                            type="time"
+                            id="new-event-time"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="new-event-venue">Event Venue</label>
+
+                        <input
+                            type="text"
+                            id="new-event-venue"
+                            placeholder="Enter event venue"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="new-event-seats">
+                            Available Seats
+                        </label>
+
+                        <input
+                            type="number"
+                            id="new-event-seats"
+                            min="1"
+                            step="1"
+                            placeholder="Enter seat limit"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="new-event-description">
+                            Event Description
+                        </label>
+
+                        <textarea
+                            id="new-event-description"
+                            rows="4"
+                            placeholder="Describe your event"
+                            required></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="new-event-image">Event Image URL</label>
+
+                        <input
+                            type="url"
+                            id="new-event-image"
+                            placeholder="Enter image URL">
+
+                    </div>
+
+
+                    <div class="event-form-actions">
+                        <button type="submit" class="submit-btn" id="event-form-submit">
+                            Add Event
+                            <i class="fas fa-plus" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="cancel-event-edit-btn" id="cancel-event-edit" hidden>
+                            Cancel editing
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <!-- Manage Events -->
+
+            <div class="admin-card">
+
+                <h3>
+                    <i class="fas fa-tasks"></i>
+                    Manage Events
+                </h3>
+
+
+                <div class="manage-events-container"
+                    id="manage-events-container">
+
+                    <p>
+                        Event management records will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- View Student Registrations -->
+
+            <div class="admin-card">
+
+                <h3>
+                    <i class="fas fa-user-graduate"></i>
+                    Student Registrations
+                </h3>
+
+
+                <button type="button" class="view-registrations-btn"
+                    id="view-student-registrations">
+
+                    View Student Registrations
+
+                </button>
+
+
+                <div class="student-registrations-container"
+                    id="student-registrations-container">
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= ABOUT US SECTION ================= -->
+
+        <section class="about-section" id="about">
+
+            <div class="about-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1529390079861-591de354faf5?w=800"
+                    alt="College students working together">
+
+            </div>
+
+
+            <div class="about-content">
+
+                <span>About CampusConnect</span>
+
+                <h2>Connecting Students Through Campus Experiences</h2>
+
+                <p>
+                    CampusConnect is a campus event management platform
+                    designed to simplify the process of discovering,
+                    organizing and participating in college events.
+                </p>
+
+                <p>
+                    Our platform provides students with a centralized
+                    place to explore upcoming activities, register for
+                    events and manage their participation.
+                </p>
+
+                <p>
+                    We aim to encourage student engagement, creativity,
+                    teamwork and learning beyond the classroom.
+                </p>
+
+                <a href="#events" class="about-btn">
+                    Discover Events
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= CONTACT SECTION ================= -->
+
+        <section class="contact-section" id="contact">
+
+            <div class="section-heading">
+
+                <span>Get In Touch</span>
+
+                <h2>Contact Us</h2>
+
+                <p>
+                    Have questions or suggestions?
+                    We would love to hear from you.
+                </p>
+                <p class="local-data-note">Messages are saved in this browser only and are not delivered to CampusConnect.</p>
+
+            </div>
+
+
+            <div class="contact-container">
+
+
+                <!-- Contact Information -->
+
+                <div class="contact-info">
+
+                    <div class="contact-item">
+
+                        <i class="fas fa-envelope"></i>
+
+                        <div>
+
+                            <h3>Email Address</h3>
+
+                            <p>campusconnect@example.com</p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="contact-item">
+
+                        <i class="fas fa-phone"></i>
+
+                        <div>
+
+                            <h3>Phone Number</h3>
+
+                            <p>+91 98765 43210</p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="contact-item">
+
+                        <i class="fas fa-location-dot"></i>
+
+                        <div>
+
+                            <h3>College Address</h3>
+
+                            <p>College Campus, Punjab, India</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Contact Form -->
+
+                <form class="contact-form" id="contact-form">
+
+                    <div class="form-group">
+
+                        <label for="contact-name">Your Name</label>
+
+                        <input
+                            type="text"
+                            id="contact-name"
+                            placeholder="Enter your name"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="contact-email">Your Email</label>
+
+                        <input
+                            type="email"
+                            id="contact-email"
+                            placeholder="Enter your email"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="contact-subject">Subject</label>
+
+                        <input
+                            type="text"
+                            id="contact-subject"
+                            placeholder="Enter subject"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="contact-message">Message</label>
+
+                        <textarea
+                            id="contact-message"
+                            rows="5"
+                            placeholder="Write your message"
+                            required></textarea>
+
+                    </div>
+
+
+                    <button type="submit" class="submit-btn">
+
+                        Send Message
+
+                        <i class="fas fa-paper-plane"></i>
+
+                    </button>
+
+                </form>
+
+            </div>
+
+            <div class="local-message-inbox">
+                <h3>Your saved messages</h3>
+                <div class="local-message-list" id="contact-messages" aria-live="polite"></div>
+            </div>
+
+        </section>
+
+
+        <!-- ================= LOGIN SECTION ================= -->
+
+        <section class="auth-section" id="login">
+
+            <div class="section-heading">
+
+                <span>Welcome Back</span>
+
+                <h2>Student Login</h2>
+                <p class="local-data-note">Browser-only demo: accounts are stored on this device and are not secure authentication.</p>
+
+            </div>
+
+
+            <form class="auth-form" id="login-form">
+
+                <div class="form-group">
+
+                    <label for="login-email">Email Address</label>
+
+                    <input
+                        type="email"
+                        id="login-email"
+                        autocomplete="username"
+                        placeholder="Enter your email"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="login-password">Password</label>
+
+                    <input
+                        type="password"
+                        id="login-password"
+                        autocomplete="current-password"
+                        placeholder="Enter your password"
+                        required>
+
+                </div>
+
+
+                <button type="submit" class="submit-btn">
+                    Login
+                </button>
+
+                <p>
+                    Don't have an account?
+                    <a href="#signup">Sign Up</a>
+                </p>
+
+            </form>
+
+        </section>
+
+
+        <!-- ================= SIGN UP SECTION ================= -->
+
+        <section class="auth-section" id="signup">
+
+            <div class="section-heading">
+
+                <span>Join CampusConnect</span>
+
+                <h2>Create Your Account</h2>
+                <p class="local-data-note">Browser-only demo: accounts are stored on this device and are not secure authentication.</p>
+
+            </div>
+
+
+            <form class="auth-form" id="signup-form">
+
+                <div class="form-group">
+
+                    <label for="signup-name">Full Name</label>
+
+                    <input
+                        type="text"
+                        id="signup-name"
+                        placeholder="Enter your full name"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="signup-email">Email Address</label>
+
+                    <input
+                        type="email"
+                        id="signup-email"
+                        autocomplete="username"
+                        placeholder="Enter your email"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="signup-password">Password</label>
+
+                    <input
+                        type="password"
+                        id="signup-password"
+                        autocomplete="new-password"
+                        minlength="8"
+                        placeholder="Create a password"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="confirm-password">Confirm Password</label>
+
+                    <input
+                        type="password"
+                        id="confirm-password"
+                        autocomplete="new-password"
+                        minlength="8"
+                        placeholder="Confirm your password"
+                        required>
+
+                </div>
+
+
+                <button type="submit" class="submit-btn">
+                    Create Account
+                </button>
+
+            </form>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- ================= FOOTER SECTION ================= -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+
+            <!-- Footer Logo -->
+
+            <div class="footer-about">
+
+                <a href="#home" class="footer-logo">
+
+                    <i class="fas fa-graduation-cap"></i>
+
+                    CampusConnect
+
+                </a>
+
+                <p>
+                    Discover opportunities, connect with students
+                    and make your campus life memorable.
+                </p>
+
+            </div>
+
+
+            <!-- Quick Links -->
+
+            <div class="footer-links">
+
+                <h3>Quick Links</h3>
+
+                <ul>
+
+                    <li><a href="#home">Home</a></li>
+
+                    <li><a href="#events">Explore Events</a></li>
+
+                    <li><a href="#registrations">My Registrations</a></li>
+
+                    <li><a href="#about">About Us</a></li>
+
+                    <li><a href="#contact">Contact</a></li>
+
+                </ul>
+
+            </div>
+
+
+            <!-- Social Media -->
+
+            <div class="footer-social">
+
+                <h3>Follow Us</h3>
+
+                <div class="social-icons">
+
+                    <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+
+                    <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+
+                    <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+
+                    <a href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X">
+                        <i class="fab fa-x-twitter"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- Copyright -->
+
+        <div class="footer-bottom">
+
+            <p>
+                &copy; 2026 CampusConnect.
+                All Rights Reserved.
+            </p>
+
+            <p>
+                Designed for College Students.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- External JavaScript -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
